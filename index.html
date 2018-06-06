@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+}
+main{
+	background: #C7BE95;
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+.window{
+	width: 750px;
+	overflow: hidden;
+    display: flex;
+    background: #FFF;
+    align-items: center;
+	border: 35px solid #C07B40;
+	border-radius: 5px;
+	box-shadow: 0px 1px 40px 5px rgba(0, 0, 0, 0.5),0px 1px 40px 5px rgba(0, 0, 0, 0.5) inset;
+	height: 500px;
+}
+.images{
+	display: flex;
+	align-items: flex-start;
+	transition: all 0.5s;
+}
+.images > img{
+	padding: 0 75px;
+}
+#buttons{
+	cursor: default;
+	margin-top: 20px;
+}
+#buttons span{
+	border: 1px solid #026084;
+	background: #026084;
+	color: #C7BE95;	
+	cursor: pointer;
+	display: inline-block;
+	width: 20px;
+	padding: 3px;
+	border-radius: 20px;
+	transition: all 0.5s;
+}
+#buttons span.active{
+	background: green;
+	border: 1px solid green;
+}
+</style>
+<body>
+	<main>
+		<div class="window">
+			<div class="images" id="images">
+				<img src="http://p69er22kd.bkt.clouddn.com/blue_2.jpg" alt="blue" width=600 height=370>
+				<img src="http://p69er22kd.bkt.clouddn.com/blue_3.jpg" alt="blue" width=600 height=370>
+				<img src="http://p69er22kd.bkt.clouddn.com/blue_4.jpg" alt="blue" width=600 height=370>
+				<img src="http://p69er22kd.bkt.clouddn.com/blue_5.jpg" alt="blue" width=600 height=370>
+			</div>
+		</div>
+		<span id="buttons">
+			<span>1</span>
+			<span>2</span>
+			<span>3</span>
+			<span>4</span>
+		</span>
+	</main>
+<script>
+var allButtons = $('#buttons >span')
+for (let i = 0; i < allButtons.length; i++) {
+	$(allButtons[i]).on('click',(x) => {
+		var index = $(x.currentTarget).index()
+		var p = index * - 750
+		$('#images').css({
+			transform: 'translateX(' + p +'px)'
+		})
+		n = index
+		activeButton(allButtons.eq(n))
+	})
+}
+
+var n = 0
+var size = allButtons.length
+allButtons.eq(n%size).trigger('click')
+
+function activeButton(a){
+	a.addClass('active')
+		.siblings('.active').removeClass('active')
+}
+
+var timerID = setInterval(() =>{
+	n+=1
+	allButtons.eq(n%size).trigger('click')
+},2000)
+
+$('.window').on('mouseenter',() => {
+	window.clearInterval(timerID)
+})
+
+$('.window').on('mouseleave',() => {
+	timerID = setInterval(() =>{
+		n+=1
+		allButtons.eq(n%size).trigger('click')
+	},2000)
+})
+</script>
+</body>	
+</html>
